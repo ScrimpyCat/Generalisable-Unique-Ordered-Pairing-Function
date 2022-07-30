@@ -93,3 +93,49 @@ While we can keep continuing this for higher dimensions, we should probably now 
 For each element/axis (x) in the set at index/dimension (n) we do: ![\frac{\prod_{i=0}^{n}(x-{i})}{(n+1)!}](https://latex.codecogs.com/svg.latex?\Large&space;%5Cfrac%7B%5Cprod_%7Bi%3D0%7D%5E%7Bn%7D%28x-%7Bi%7D%29%7D%7B%28n+1%29%21%7D)
 
 And sum the result for each dimension.
+
+## Examples
+
+Note: In the following examples we avoid calculating the factorial independently.
+
+```c
+// C
+unsigned int encode(unsigned int *set, size_t n)
+{
+    unsigned int result = 0;
+    unsigned int factorial = 1;
+
+    for (size_t i = 0; i < n; i++)
+    {
+        factorial *= (i + 1) * 1;
+
+        unsigned int p = 1;
+        for (size_t j = 0; j <= i; j++)
+        {
+            p *= (set[i] - j);
+        }
+
+        result += p / factorial;
+    }
+
+    return result;
+}
+
+encode((unsigned int[]){ 0, 4, 6 }, 3); //=> 26
+encode((unsigned int[]){ 0, 1, 2, 3, 4, 5, 7, 9 }, 8); //=> 10
+```
+
+```elixir
+# Elixir
+defmodule Set do
+    def encode(set, n \\ 1, factorial \\ 1)
+    def encode([], _, _), do: 0
+    def encode([x|set], n, factorial), do: div(product(x, n - 1), (factorial * n)) + encode(set, n + 1, factorial * n)
+
+    defp product(x, 0), do: x
+    defp product(x, n), do: (x - n) * product(x, n - 1)
+end
+
+Set.encode [0,4,6] #=> 26
+Set.encode [0,1,2,3,4,5,7,9] #=> 10
+```
