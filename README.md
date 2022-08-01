@@ -1,4 +1,4 @@
-# Generaliseable Unique Ordered Pairing Function
+# Generalisable Unique Ordered Pairing Function
 
 This article presents a function for encoding unique ordered sets of natural numbers into a single unique natural number.
 
